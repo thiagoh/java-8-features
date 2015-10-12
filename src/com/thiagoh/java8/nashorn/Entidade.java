@@ -10,7 +10,5 @@ public interface Entidade {
 
 	public double getRealizado();
 
-	public List<Entidade> getChildren();
-	
 	public List<ExecutionData> getDataEntries();
 }

@@ -8,14 +8,12 @@ public class EntidadeImpl implements Entidade {
 	private String name;
 	private double previsto;
 	private double realizado;
-	private List<Entidade> children;
 	private List<ExecutionData> dataEntries;
 
 	public EntidadeImpl(String name, double previsto, double realizado) {
 		this.name = name;
 		this.previsto = previsto;
 		this.realizado = realizado;
-		this.children = new ArrayList<>();
 		this.dataEntries = new ArrayList<>();
 	}
 
@@ -26,19 +24,6 @@ public class EntidadeImpl implements Entidade {
 
 	public void addData(ExecutionData data) {
 		this.dataEntries.add(data);
-	}
-
-	public void add(Entidade child) {
-		this.children.add(child);
-	}
-
-	public void addDataEntries(Entidade child) {
-		this.children.add(child);
-	}
-
-	@Override
-	public List<Entidade> getChildren() {
-		return children;
 	}
 
 	@Override

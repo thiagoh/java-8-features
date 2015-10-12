@@ -33,23 +33,7 @@ public class NashornTest1 {
 
 		Invocable invocable = (Invocable) engine;
 
-		EntidadeImpl entidade1 = new EntidadeImpl("Objetivo 1", 100, 70);
-
-		for (int i = 0; i < 1000; i++) {
-			EntidadeImpl child = new EntidadeImpl("Acao " + i, 100, Math.random() * 100);
-
-			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
-			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
-			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
-			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
-			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
-			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
-			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
-			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
-			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
-
-			entidade1.add(child);
-		}
+		Entidade entidade1 = EntidadeUtil.getObjetivo();
 
 		try {
 
@@ -72,7 +56,7 @@ public class NashornTest1 {
 
 	private static boolean getStatus(Entidade entidade) {
 
-		Entidade child = entidade.getChildren().stream().filter((cur) -> {
+		Entidade child = EntidadeUtil.getAcaoPrioritariaList().stream().filter((cur) -> {
 
 			// System.out.println("previsto: " + cur.getPrevisto() +
 			// " realizado: " + cur.getRealizado());
