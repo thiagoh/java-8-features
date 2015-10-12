@@ -36,7 +36,19 @@ public class NashornTest1 {
 		EntidadeImpl entidade1 = new EntidadeImpl("Objetivo 1", 100, 70);
 
 		for (int i = 0; i < 1000; i++) {
-			entidade1.add(new EntidadeImpl("Acao " + i, 100, Math.random() * 100));
+			EntidadeImpl child = new EntidadeImpl("Acao " + i, 100, Math.random() * 100);
+
+			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
+			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
+			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
+			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
+			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
+			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
+			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
+			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
+			child.addData(new ExecutionDataImpl(80 + (Math.random() * 20), Math.random() * 100));
+
+			entidade1.add(child);
 		}
 
 		try {
@@ -66,7 +78,7 @@ public class NashornTest1 {
 			// " realizado: " + cur.getRealizado());
 
 				return cur.getRealizado() < cur.getPrevisto() * 0.01;
-				
+
 			}).findFirst().get();
 
 		System.out.println("Result child: " + child);
