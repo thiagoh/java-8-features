@@ -17,7 +17,7 @@ public class NashornTest1 {
 
 		ScriptEngine engine = scriptEngineManager.getEngineByName("nashorn");
 
-		String path = "/home/thiago/dev/java/workspace/java8-ex/src/com/thiagoh/java8/nashorn/status.js";
+		String path = "bin/com/thiagoh/java8/nashorn/status.js";
 
 		try {
 
