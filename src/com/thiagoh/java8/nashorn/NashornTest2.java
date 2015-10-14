@@ -47,8 +47,14 @@ public class NashornTest2 {
 
 				try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");) {
 
+					String content = "var value = " + c + ";\n"
+							+ "var f = function() {\n"
+							+ "	return \"foo bar\";\n"
+							+ "};";
+					
 					randomAccessFile.seek(0);
-					randomAccessFile.writeBytes("var value = " + c + ";");
+					randomAccessFile.writeBytes(content);
+					randomAccessFile.setLength(content.length());
 				}
 
 			} catch (URISyntaxException | IOException e) {
@@ -74,8 +80,6 @@ public class NashornTest2 {
 			urlConnection.setUseCaches(false);
 
 			StringBuilder sb = new StringBuilder();
-
-			System.out.println(urlConnection.toString());
 			
 			InputStream inputStream = urlConnection.getInputStream();
 
@@ -92,16 +96,14 @@ public class NashornTest2 {
 			engine.eval(new StringReader(sb.toString()), bindings);
 
 		} catch (ScriptException | IOException e) {
-			//e.printStackTrace();
-			System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 
 		long t1 = System.currentTimeMillis();
-		// bindings.values().stream().forEach(System.out::println);
-		Object result = bindings.getOrDefault("value", "");
+		Object resultValue = bindings.getOrDefault("value", "");
 		long t2 = System.currentTimeMillis();
 
-		System.out.println(result.toString() + " in " + (t2 - t1) + "ms");
+		System.out.println(resultValue.toString() + " in " + (t2 - t1) + "ms");
 	}
 
 }
