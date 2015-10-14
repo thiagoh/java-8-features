@@ -1,23 +1,21 @@
 package com.thiagoh.java8.nashorn;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
+import java.io.StringReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Arrays;
 
-import javax.script.Invocable;
+import javax.script.Bindings;
+import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 public class NashornTest2 {
 
@@ -50,7 +48,7 @@ public class NashornTest2 {
 				try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");) {
 
 					randomAccessFile.seek(0);
-					randomAccessFile.writeUTF("var value = " + c + ";");
+					randomAccessFile.writeBytes("var value = " + c + ";");
 				}
 
 			} catch (URISyntaxException | IOException e) {
@@ -65,6 +63,8 @@ public class NashornTest2 {
 
 		ScriptEngine engine = scriptEngineManager.getEngineByName("nashorn");
 
+		Bindings bindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+
 		try {
 
 			URL resourceUrl = contextClassLoader.getResource(_PATH);
@@ -73,16 +73,32 @@ public class NashornTest2 {
 
 			urlConnection.setUseCaches(false);
 
+			StringBuilder sb = new StringBuilder();
+
+			System.out.println(urlConnection.toString());
+			
 			InputStream inputStream = urlConnection.getInputStream();
 
-			engine.eval(new InputStreamReader(inputStream));
+			try (BufferedReader buffered = new BufferedReader(new InputStreamReader(inputStream));) {
+
+				String line = null;
+
+				while ((line = buffered.readLine()) != null) {
+					sb.append(line).append("\n");
+				}
+			}
+
+			System.out.println("File content: " + sb.toString());
+			engine.eval(new StringReader(sb.toString()), bindings);
 
 		} catch (ScriptException | IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 
 		long t1 = System.currentTimeMillis();
-		Object result = engine.get("value");
+		// bindings.values().stream().forEach(System.out::println);
+		Object result = bindings.getOrDefault("value", "");
 		long t2 = System.currentTimeMillis();
 
 		System.out.println(result.toString() + " in " + (t2 - t1) + "ms");
