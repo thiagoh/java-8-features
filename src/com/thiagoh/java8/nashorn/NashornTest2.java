@@ -47,11 +47,9 @@ public class NashornTest2 {
 
 				try (RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");) {
 
-					String content = "var value = " + c + ";\n"
-							+ "var f = function() {\n"
-							+ "	return \"foo bar\";\n"
+					String content = "var value = " + c + ";\n" + "var f = function() {\n" + "	return \"foo bar\";\n"
 							+ "};";
-					
+
 					randomAccessFile.seek(0);
 					randomAccessFile.writeBytes(content);
 					randomAccessFile.setLength(content.length());
@@ -80,7 +78,7 @@ public class NashornTest2 {
 			urlConnection.setUseCaches(false);
 
 			StringBuilder sb = new StringBuilder();
-			
+
 			InputStream inputStream = urlConnection.getInputStream();
 
 			try (BufferedReader buffered = new BufferedReader(new InputStreamReader(inputStream));) {
@@ -92,7 +90,7 @@ public class NashornTest2 {
 				}
 			}
 
-			System.out.println("File content: " + sb.toString());
+			// System.out.println("File content: " + sb.toString());
 			engine.eval(new StringReader(sb.toString()), bindings);
 
 		} catch (ScriptException | IOException e) {
@@ -100,10 +98,14 @@ public class NashornTest2 {
 		}
 
 		long t1 = System.currentTimeMillis();
-		Object resultValue = bindings.getOrDefault("value", "");
+
+		int resultValue = ((Integer) bindings.getOrDefault("value", 0)).intValue();
+
+		bindings.put("value", resultValue + 1);
+
 		long t2 = System.currentTimeMillis();
 
-		System.out.println(resultValue.toString() + " in " + (t2 - t1) + "ms");
+		System.out.println("Value is: " + resultValue + " in " + (t2 - t1) + "ms");
 	}
 
 }
